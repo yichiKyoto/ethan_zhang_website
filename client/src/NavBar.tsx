@@ -4,7 +4,7 @@ import { Context } from './Context';
 import { useContext, useState } from 'react';
 
 export default function NavBar() {
-  const { language, setLanguage } = useContext(Context);
+  const { language, setLanguage, isAdmin } = useContext(Context);
 
   return (
     <div className="flex justify-center w-full items-center text-center bg-purple-100 gap-10 shadow-lg">
@@ -55,7 +55,16 @@ export default function NavBar() {
       </Link>
 
       <Link to="/admin" className="text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer absolute right-10">
-        {language === 'English' ? 'Admin Access' : '管理员访问'}
+        {language === 'English' ? (
+          <>
+            Edit mode <span>{isAdmin ? "ON" : "OFF"}</span>
+          </>
+        ) :
+        (
+          <>
+            编辑模式 <span>{isAdmin ? "开" : "关"}</span>
+          </>
+        )}
       </Link>
     </div>
   );

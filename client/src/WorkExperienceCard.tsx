@@ -74,11 +74,13 @@ export default function WorkExperienceCard(props: {
         </div>
         <h3 className="text-lg font-medium text-gray-400">{zh ? (position_zh || position) : position}</h3>
         <h4 className="mt-5 text-lg font-semibold">{zh ? '掌握的技能' : 'Skills Acquired'}</h4>
-        <ul className="list-outside list-disc space-y-1 pl-6 marker:text-gray-600">
+        <div className="mt-2 flex flex-wrap gap-2">
           {skills.map((item, i) => (
-            <li key={i}>{zh ? (item.zh || item.en) : item.en}</li>
+            <span key={i} className="rounded-full bg-purple-300 px-3 py-1 text-sm font-medium text-purple-900">
+              {zh ? (item.zh || item.en) : item.en}
+            </span>
           ))}
-        </ul>
+        </div>
         {isAdmin && (
           <div className="my-5 flex gap-2">
             <button

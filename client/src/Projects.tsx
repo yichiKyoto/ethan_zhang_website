@@ -5,16 +5,18 @@ export type { Project } from "./backendHelpers"
 import { getAllProjects, type Project } from "./backendHelpers"
 import { Context } from "./Context";
 import AddProjectModal from "./AddProjectModal";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
 
   const { language, isAdmin } = useContext(Context);
   const isChinese = language === "中文";
 
   const loadProjects = () => {
-    getAllProjects().then(setProjects)
+    getAllProjects().then(setProjects).catch(console.error).finally(() => setLoading(false))
   }
 
   useEffect(() => {
@@ -38,15 +40,30 @@ export default function Projects() {
             </button>
           )}
         </div>
+        {
+          loading ? (
+            <div className="flex-1 rounded-xl bg-red-200 overflow-y-auto shadow-md p-8 grid gap-6 auto-rows-min">
+              <LoadingSpinner/>
+            </div>
+          ) : (
+            <div className="flex-1 rounded-xl bg-red-200 overflow-y-auto shadow-md p-8 grid gap-6 auto-rows-min" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(600px, 1fr))' }}>
+              {projects.map((project, index) => {
+              const { title, github, images, attributes, title_zh } = project;
+              return (
+                <ProjectCard key={project.id} id={project.id} title={title} title_zh={title_zh} github={github} images={images} attributes={attributes} index={index} handleDelete={(index) => {
+                  setProjects((prev) => {
+                    const newProjects = [... prev]
+                    newProjects.splice(index, 1);
+                    return newProjects;
+                  });
+                }}/>
+              )
+              })}
+            </div>
+          )
+        }
 
-        <div className="flex-1 rounded-xl bg-red-200 overflow-y-auto shadow-md flex flex-col p-8 items-center">
-          {projects.map((project) => {
-            const { title, github, images, attributes } = project;
-            return (
-              <ProjectCard key={project.id} id={project.id} title={title} github={github} images={images} attributes={attributes}/>
-            )
-          })}
-        </div>
+
       </div>
 
       {showAddModal && (

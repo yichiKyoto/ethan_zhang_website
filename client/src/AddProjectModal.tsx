@@ -1,6 +1,6 @@
 import { useRef, useState, useContext } from "react"
 import Input from "./Input"
-import { addProject } from "./backendHelpers"
+import { addProject, type ProjectAttribute } from "./backendHelpers"
 import { Context } from "./Context"
 
 export default function AddProjectModal(props: {
@@ -12,8 +12,9 @@ export default function AddProjectModal(props: {
   const isChinese = language === '中文'
 
   const [title, setTitle] = useState('')
+  const [titleZh, setTitleZh] = useState('')
   const [github, setGithub] = useState('')
-  const [attributes, setAttributes] = useState<string[]>([])
+  const [attributes, setAttributes] = useState<ProjectAttribute[]>([])
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [submitting, setSubmitting] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -29,8 +30,7 @@ export default function AddProjectModal(props: {
   const handleSubmit = async () => {
     setSubmitting(true)
     try {
-      await addProject(title.trim(), github.trim(), imageFiles, attributes)
-
+      await addProject(title.trim(), titleZh.trim(), github.trim(), imageFiles, attributes)
       onAdded()
       onClose()
     } catch (e) {
@@ -50,8 +50,24 @@ export default function AddProjectModal(props: {
 
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
         <div className="grid min-w-0 grid-cols-2 gap-4 [&>*]:min-w-0">
-          <Input label={isChinese ? '项目名称' : 'Title'} type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-          <Input label={isChinese ? 'GitHub 链接' : 'GitHub Link'} type="text" value={github} onChange={(e) => setGithub(e.target.value)} />
+          <Input
+            label={isChinese ? '项目名称 (英文)' : 'Title (English)'}
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Input
+            label={isChinese ? '项目名称 (中文)' : 'Title (Chinese)'}
+            type="text"
+            value={titleZh}
+            onChange={(e) => setTitleZh(e.target.value)}
+          />
+          <Input
+            label={isChinese ? 'GitHub 链接' : 'GitHub Link'}
+            type="text"
+            value={github}
+            onChange={(e) => setGithub(e.target.value)}
+          />
         </div>
 
         {/* Images */}
@@ -102,14 +118,24 @@ export default function AddProjectModal(props: {
         {/* Attributes */}
         <div className="flex min-h-0 max-h-[300px] flex-col gap-3 overflow-y-auto pr-1">
           {attributes.map((attr, index) => (
-            <div key={index} className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-end gap-x-2">
+            <div key={index} className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-x-2">
               <Input
                 type="text"
-                label={isChinese ? `特点 ${index + 1}` : `Attribute ${index + 1}`}
-                value={attr}
+                label={isChinese ? `特点 ${index + 1} (英文)` : `Attribute ${index + 1} (English)`}
+                value={attr.en}
                 onChange={(e) => {
                   const updated = [...attributes]
-                  updated[index] = e.target.value
+                  updated[index] = { ...updated[index], en: e.target.value }
+                  setAttributes(updated)
+                }}
+              />
+              <Input
+                type="text"
+                label={isChinese ? `特点 ${index + 1} (中文)` : `Attribute ${index + 1} (Chinese)`}
+                value={attr.zh}
+                onChange={(e) => {
+                  const updated = [...attributes]
+                  updated[index] = { ...updated[index], zh: e.target.value }
                   setAttributes(updated)
                 }}
               />
@@ -129,7 +155,7 @@ export default function AddProjectModal(props: {
         <button
           type="button"
           className="w-full shrink-0 cursor-pointer rounded-xl bg-red-200 px-8 py-3 hover:bg-red-300 sm:w-auto sm:self-start"
-          onClick={() => setAttributes(prev => [...prev, ''])}
+          onClick={() => setAttributes(prev => [...prev, { en: '', zh: '' }])}
         >
           {isChinese ? '添加特点' : 'Add Attribute'}
         </button>

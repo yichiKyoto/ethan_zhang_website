@@ -5,18 +5,21 @@ import AddWorkExperienceModal from './AddWorkExperienceModal'
 import { fetchAllWorkExperience } from './backendHelpers'
 import type { WorkExperience } from './backendHelpers'
 import { Context } from './Context'
+import LoadingSpinner from './LoadingSpinner'
 
 export default function WorkExperience() {
   const { isAdmin, language } = useContext(Context)
   const isChinese = language === '中文'
 
   const [workExperience, setWorkExperience] = useState<WorkExperience[]>([])
+  const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState(false)
 
   useEffect(() => {
     fetchAllWorkExperience()
       .then((data) => setWorkExperience(data))
       .catch(console.error)
+      .finally(() => setLoading(false))
   }, [])
 
   const refresh = () => {
@@ -44,7 +47,7 @@ export default function WorkExperience() {
         </div>
 
         <div className="flex flex-col gap-3">
-          {workExperience.map((item) => (
+          {loading ? <LoadingSpinner /> : workExperience.map((item) => (
             <WorkExperienceCard
               key={item.id}
               id={item.id}

@@ -9,14 +9,14 @@ import { useContext } from "react";
 const copy = {
   en: {
     label: 'Admin Key',
-    grant: 'Access admin privileges',
-    revoke: 'Revoke admin privileges',
+    grant: 'Turn Edit Mode ON',
+    revoke: 'Turn Edit Mode OFF',
     error: 'Invalid admin key',
   },
   zh: {
     label: '管理员密钥',
-    grant: '获取管理员权限',
-    revoke: '撤销管理员权限',
+    grant: '开启编辑模式',
+    revoke: '推出编辑模式',
     error: '管理员密钥无效',
   },
 } as const

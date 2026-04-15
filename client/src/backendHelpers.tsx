@@ -225,12 +225,18 @@ export const uploadTranscript = async (id: number, file: File): Promise<string> 
   return data.publicUrl
 }
 
+export type ProjectAttribute = {
+  en: string
+  zh: string
+}
+
 export type Project = {
   id: number
   title: string
+  title_zh: string
   github: string
   images: string[]
-  attributes: string[]
+  attributes: ProjectAttribute[]
 }
 
 export type NewProject = Omit<Project, 'id'>
@@ -238,7 +244,7 @@ export type NewProject = Omit<Project, 'id'>
 export const getAllProjects = async (): Promise<Project[]> => {
   const { data, error } = await supabase
     .from('projects')
-    .select('id, title, github_link, project_attributes(attribute), project_images(image_url)')
+    .select('id, title, title_zh, github_link, project_attributes(attribute, attribute_zh), project_images(image_url)')
     .order('id')
 
   if (error) throw new Error(error.message)
@@ -246,25 +252,31 @@ export const getAllProjects = async (): Promise<Project[]> => {
   return (data ?? []).map((row: any) => ({
     id: row.id,
     title: row.title,
+    title_zh: row.title_zh,
     github: row.github_link,
-    attributes: (row.project_attributes ?? []).map((a: any) => a.attribute as string),
+    attributes: (row.project_attributes ?? []).map((a: any) => ({ en: a.attribute as string, zh: a.attribute_zh as string })),
     images: (row.project_images ?? []).map((img: any) => img.image_url as string),
   }))
 }
 
 export const updateProject = async (id: string, project: NewProject): Promise<void> => {
-  await supabase.from('project_attributes').delete().eq('project_id', id)
-  await supabase.from('project_images').delete().eq('project_id', id)
+  const numId = Number(id)
+
+  const { error: delAttrError } = await supabase.from('project_attributes').delete().eq('project_id', numId)
+  if (delAttrError) throw new Error(delAttrError.message)
+
+  const { error: delImgError } = await supabase.from('project_images').delete().eq('project_id', numId)
+  if (delImgError) throw new Error(delImgError.message)
 
   const { error } = await supabase
     .from('projects')
-    .update({ title: project.title, github_link: project.github })
-    .eq('id', id)
+    .update({ title: project.title, title_zh: project.title_zh, github_link: project.github })
+    .eq('id', numId)
   if (error) throw new Error(error.message)
 
   await Promise.all([
-    ...project.images.map(url => addProjectImage(Number(id), url)),
-    ...project.attributes.map(attr => addProjectAttribute(Number(id), attr)),
+    ...project.images.map(url => addProjectImage(numId, url)),
+    ...project.attributes.map(attr => addProjectAttribute(numId, attr)),
   ])
 }
 
@@ -276,10 +288,10 @@ export const deleteProject = async (id: string): Promise<void> => {
   if (error) throw new Error(error.message)
 }
 
-export const addProjectAttribute = async (projectId: number, attribute: string): Promise<void> => {
+export const addProjectAttribute = async (projectId: number, attribute: ProjectAttribute): Promise<void> => {
   const { error } = await supabase
     .from('project_attributes')
-    .insert({ project_id: projectId, attribute })
+    .insert({ project_id: projectId, attribute: attribute.en, attribute_zh: attribute.zh })
   if (error) throw new Error(error.message)
 }
 
@@ -287,12 +299,12 @@ export const uploadProjectImage = async (projectId: number, file: File): Promise
   const filePath = `project_${projectId}_${Date.now()}_${file.name}`
 
   const { error: uploadError } = await supabase.storage
-    .from('project-screenshots')
+    .from('project-images')
     .upload(filePath, file, { upsert: false })
   if (uploadError) throw new Error(uploadError.message)
 
   const { data } = supabase.storage
-    .from('project-screenshots')
+    .from('project-images')
     .getPublicUrl(filePath)
 
   return data.publicUrl
@@ -305,10 +317,10 @@ export const addProjectImage = async (projectId: number, imageUrl: string): Prom
   if (error) throw new Error(error.message)
 }
 
-export const addProject = async (title: string, githubLink: string, imageFiles: File[], attributes: string[]): Promise<void> => {
+export const addProject = async (title: string, title_zh: string, githubLink: string, imageFiles: File[], attributes: ProjectAttribute[]): Promise<void> => {
   const { data, error } = await supabase
     .from('projects')
-    .insert({ title, github_link: githubLink })
+    .insert({ title, title_zh, github_link: githubLink })
     .select()
     .single()
   if (error) throw new Error(error.message)

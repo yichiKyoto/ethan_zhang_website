@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react'
 import { fetchAllEducation } from './backendHelpers'
 import type { Education } from './backendHelpers'
 import AddEducationModal from './AddEducationModal'
+import LoadingSpinner from './LoadingSpinner'
 const copy = {
   en: {
     pageTitle: 'Education',
@@ -40,13 +41,13 @@ export default function Education() {
   const { isAdmin, language } = useContext(Context)
   const t = language === '中文' ? copy.zh : copy.en
   const [education, setEducation] = useState<Education[]>([])
+  const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState<boolean>(false);
   useEffect(() => {
     fetchAllEducation()
-    .then((data) => {
-      setEducation(data)
-
-    }).catch(console.error)
+      .then((data) => setEducation(data))
+      .catch(console.error)
+      .finally(() => setLoading(false))
   }, [])
 
   return (
@@ -68,7 +69,7 @@ export default function Education() {
         </div>
 
         <div className="flex flex-col gap-3">
-          {education.map((item) => (
+          {loading ? <LoadingSpinner /> : education.map((item) => (
             <EducationCard
               key={item.id}
               id={item.id}
