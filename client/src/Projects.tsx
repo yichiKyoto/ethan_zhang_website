@@ -39,7 +39,7 @@ export default function Projects() {
           )}
         </div>
 
-        <div className="flex-1 rounded-xl bg-red-200 overflow-y-auto shadow-md flex flex-col">
+        <div className="flex-1 rounded-xl bg-red-200 overflow-y-auto shadow-md flex flex-col p-8 items-center">
           {projects.map((project) => {
             const { title, github, images, attributes } = project;
             return (
