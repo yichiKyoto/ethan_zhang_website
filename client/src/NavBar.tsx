@@ -7,8 +7,8 @@ export default function NavBar(props: {bgColor: string, txtColor: string}) {
   const { language, setLanguage, isAdmin } = useContext(Context);
 
   return (
-    <div className={`flex justify-center w-full items-center text-center ${props.bgColor} ${props.txtColor} gap-10 shadow-lg`}>
-      <button className="text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer absolute left-10" onClick={() => {
+    <div className={`flex justify-center w-full items-center text-center ${props.bgColor} ${props.txtColor} gap-10 shadow-lg px-5`}>
+      <button className="text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer mr-auto" onClick={() => {
         if (language === 'English') {
           setLanguage('中文');
         } else {
@@ -54,7 +54,7 @@ export default function NavBar(props: {bgColor: string, txtColor: string}) {
         {language === 'English' ? 'Gym' : '健身'}
       </Link>
 
-      <Link to="/admin" className="text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer absolute right-10">
+      <Link to="/admin" className="text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer ml-auto">
         {language === 'English' ? (
           <>
             Edit mode <span>{isAdmin ? "ON" : "OFF"}</span>
