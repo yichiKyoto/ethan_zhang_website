@@ -58,7 +58,7 @@ export default function Landing() {
           <span className="min-w-0 truncate">linkedin.com/in/ethan-zhang-b52572365</span>
         </a>
         <a
-          href="https://github.com/ethan.zhang"
+          href="https://github.com/yichiKyoto"
           target="_blank"
           rel="noopener noreferrer"
           className={contactLinkClass}
@@ -67,13 +67,13 @@ export default function Landing() {
           <span className="min-w-0 truncate">GitHub</span>
         </a>
         <a
-          href="https://discord.com/ethan.zhang"
+          href="https://discord.com/channels/@me"
           target="_blank"
           rel="noopener noreferrer"
           className={contactLinkClass}
         >
           <IconDiscord />
-          <span className="min-w-0 truncate">Discord</span>
+          <span className="min-w-0 truncate">mooncradle</span>
         </a>
         <a href="tel:+61479057618" className={contactLinkClass}>
           <IconPhone />
