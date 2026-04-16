@@ -65,7 +65,7 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
         <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
           <button
             type="button"
-            className="cursor-pointer text-gray-600 hover:text-blue-600 transition-colors"
+            className="cursor-pointer text-gray-600 hover:text-blue-600 transition-colors bg-white rounded-lg p-1 shadow"
             onClick={() => setEditing(true)}
             title={isChinese ? '编辑' : 'Edit'}
           >
@@ -76,7 +76,7 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
           <button
             type="button"
             disabled={deleting}
-            className="cursor-pointer text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50"
+            className="cursor-pointer text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50 bg-white rounded-lg p-1 shadow"
             onClick={() => {
               supabaseDelete()
               .then(() => {
