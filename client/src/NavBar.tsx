@@ -3,11 +3,11 @@ import ethanPhoto from './assets/ethan_zhang.png'
 import { Context } from './Context';
 import { useContext, useState } from 'react';
 
-export default function NavBar() {
+export default function NavBar(props: {bgColor: string, txtColor: string}) {
   const { language, setLanguage, isAdmin } = useContext(Context);
 
   return (
-    <div className="flex justify-center w-full items-center text-center bg-purple-100 gap-10 shadow-lg">
+    <div className={`flex justify-center w-full items-center text-center ${props.bgColor} ${props.txtColor} gap-10 shadow-lg`}>
       <button className="text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer absolute left-10" onClick={() => {
         if (language === 'English') {
           setLanguage('中文');
@@ -35,7 +35,7 @@ export default function NavBar() {
         {language === 'English' ? 'Work Experience' : '工作经历'}
       </Link>
       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-      <Link to="/" className="text-center text-xl text-black/60 flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl">
+      <Link to="/" className="text-center text-xl flex items-center gap-3 underline-offset-4 transition-colors hover:bg-gray-200/60 p-5 rounded-xl">
         <img src={ethanPhoto} alt="Ethan Zhang" className="w-10 h-10 rounded-lg" />
         <p> {language === 'English' ? 'Ethan Zhang' : '张亦弛'} </p>
       </Link>

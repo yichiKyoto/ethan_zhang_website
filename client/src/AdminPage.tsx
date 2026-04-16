@@ -31,7 +31,7 @@ export default function AdminPage() {
   console.log(language);
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      <NavBar />
+      <NavBar txtColor="text-black" bgColor="bg-purple-100"/>
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-4 bg-red-100">
         <div className="-translate-y-1/2 flex flex-col gap-4">
           <Input

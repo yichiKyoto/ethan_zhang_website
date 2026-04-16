@@ -310,6 +310,7 @@ export const uploadProjectImage = async (projectId: number, file: File): Promise
   return data.publicUrl
 }
 
+
 export const addProjectImage = async (projectId: number, imageUrl: string): Promise<void> => {
   const { error } = await supabase
     .from('project_images')
@@ -331,4 +332,70 @@ export const addProject = async (title: string, title_zh: string, githubLink: st
     ...imageUrls.map(url => addProjectImage(data.id, url)),
     ...attributes.map(attr => addProjectAttribute(data.id, attr)),
   ])
+}
+
+// ── Gym Cards ──────────────────────────────────────────────────────────────
+
+export type GymCard = {
+  id: number
+  image_url: string
+  description_en: string
+  description_zh: string
+}
+
+export const getAllGymCards = async (): Promise<GymCard[]> => {
+  const { data, error } = await supabase
+    .from('gym_card')
+    .select('id, image_url, description_en, description_zh')
+    .order('id')
+  if (error) throw new Error(error.message)
+  console.log(data);
+  return data ?? []
+}
+
+export const uploadGymImage = async (id: number, file: File): Promise<string> => {
+  const filePath = `gym_${id}_${Date.now()}_${file.name}`
+  const { error: uploadError } = await supabase.storage
+    .from('gym-images')
+    .upload(filePath, file, { upsert: false })
+  if (uploadError) throw new Error(uploadError.message)
+  const { data } = supabase.storage.from('gym-images').getPublicUrl(filePath)
+  return data.publicUrl
+}
+
+export const addGymCard = async (imageFile: File, description_en: string, description_zh: string): Promise<void> => {
+  const { data, error } = await supabase
+    .from('gym_card')
+    .insert({ description_en, description_zh, image_url: '' })
+    .select()
+    .single()
+  if (error) throw new Error(error.message)
+
+  const imageUrl = await uploadGymImage(data.id, imageFile)
+
+  const { error: updateError } = await supabase
+    .from('gym_card')
+    .update({ image_url: imageUrl })
+    .eq('id', data.id)
+  if (updateError) throw new Error(updateError.message)
+}
+
+export const updateGymCard = async (id: string, description_en: string, description_zh: string, imageFile?: File): Promise<void> => {
+  let image_url: string | undefined
+  if (imageFile) {
+    image_url = await uploadGymImage(Number(id), imageFile)
+  }
+  const { error } = await supabase
+    .from('gym_card')
+    .update({ description_en, description_zh, ...(image_url ? { image_url } : {}) })
+    .eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+export const deleteGymCard = async (id: string): Promise<void> => {
+  const { error } = await supabase
+    .from('gym_card')
+    .delete()
+    .eq('id', id)
+  if (error) throw new Error(error.message)
 }

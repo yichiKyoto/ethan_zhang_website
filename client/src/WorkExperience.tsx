@@ -30,7 +30,7 @@ export default function WorkExperience() {
 
   return (
     <div className="flex h-dvh flex-col">
-      <NavBar />
+      <NavBar txtColor='text-black' bgColor='bg-purple-100' />
       <div className="flex flex-1 flex-col gap-3 bg-red-100 p-4">
         <div className="flex items-center gap-5">
           <h1 className="text-3xl font-medium my-4 mx-2">

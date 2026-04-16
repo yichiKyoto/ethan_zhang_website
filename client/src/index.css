@@ -8,3 +8,11 @@ html, body {
   color: #333;
 }
 
+@keyframes pulse-orange {
+  0%, 100% { color: #fed7aa; }   /* orange-200 — light */
+  50%       { color: #c2410c; }   /* orange-700 — dark  */
+}
+
+.text-pulse-orange {
+  animation: pulse-orange 3s ease-in-out infinite;
+}

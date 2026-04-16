@@ -25,7 +25,7 @@ export default function Projects() {
 
   return (
     <div className="h-[100dvh] flex flex-col">
-      <NavBar/>
+      <NavBar bgColor="bg-purple-100" txtColor="black"/>
       <div className="flex-1 bg-red-100 p-5 flex flex-col gap-5">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl">

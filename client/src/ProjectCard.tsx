@@ -8,6 +8,7 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
   const { images: initialImages, title, title_zh, github, attributes, id } = props;
   const [index, setIndex] = useState(0);
   const [fading, setFading] = useState(false);
+  const [imgLoading, setImgLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [current, setCurrent] = useState<NewProject>({ title, title_zh, github, images: initialImages, attributes })
@@ -21,6 +22,7 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
     setFading(true)
     setTimeout(() => {
       setIndex(next)
+      setImgLoading(true)
       setFading(false)
     }, 100)
   }
@@ -96,10 +98,19 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
           <p className="text-center text-xl">no image!</p>
         )}
         {images.length > 0 && (
-          <img
-            src={images[index]}
-            className={`rounded-lg w-full h-full object-cover absolute inset-0 transition-opacity duration-200 ${fading ? 'opacity-0' : 'opacity-100'}`}
-          />
+          <>
+            {imgLoading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-200 border-t-red-500" />
+              </div>
+            )}
+            <img
+              src={images[index]}
+              onLoad={() => setImgLoading(false)}
+              onLoadStart={() => setImgLoading(true)}
+              className={`rounded-lg w-full h-full object-cover absolute inset-0 transition-opacity duration-200 ${fading || imgLoading ? 'opacity-0' : 'opacity-100'}`}
+            />
+          </>
         )}
         {images.length > 1 && (
           <>

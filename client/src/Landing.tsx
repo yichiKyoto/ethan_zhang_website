@@ -18,7 +18,7 @@ export default function Landing() {
   const { language } = useContext(Context);
   return (
     <div className="flex flex-col h-dvh">
-    <NavBar />
+    <NavBar txtColor="text-black" bgColor='bg-purple-100'/>
     <div className="flex flex-col items-center justify-center gap-10 p-4 bg-red-100 flex-1">
 
       <div className="flex flex-col items-center justify-center gap-1">
