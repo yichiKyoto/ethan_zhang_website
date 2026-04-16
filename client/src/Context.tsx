@@ -2,8 +2,8 @@ import { createContext } from "react";
 
 export const Context = createContext({
   language: 'English',
-  setLanguage: (language: string) => {},
+  setLanguage: (_language: string) => {},
   isAdmin: false,
-  setAdmin: (isAdmin: boolean) => {},
+  setAdmin: (_isAdmin: boolean) => {},
 });
 

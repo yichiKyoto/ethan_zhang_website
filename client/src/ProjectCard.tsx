@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-import { type Project } from './Projects'
 import { deleteProject, type NewProject, type ProjectAttribute } from './backendHelpers'
 import { Context } from './Context'
 import EditProjectCard from './EditProjectCard'

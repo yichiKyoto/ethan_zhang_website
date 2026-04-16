@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ethanPhoto from './assets/ethan_zhang.png'
 import { Context } from './Context';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 export default function NavBar(props: {bgColor: string, txtColor: string}) {
   const { language, setLanguage, isAdmin } = useContext(Context);
