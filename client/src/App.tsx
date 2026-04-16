@@ -12,7 +12,7 @@ import type { Project } from './backendHelpers'
 
 function App() {
   const [language, setLanguage] = useState('English');
-  const [isAdmin, setAdmin] = useState(false);
+  const [isAdmin, setAdmin] = useState(true);
 
   return (
     <Context.Provider value={{ language, setLanguage, isAdmin, setAdmin }}>
