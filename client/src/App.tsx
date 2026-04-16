@@ -11,9 +11,10 @@ import AdminPage from './AdminPage'
 function App() {
   const [language, setLanguage] = useState('English');
   const [isAdmin, setAdmin] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <Context.Provider value={{ language, setLanguage, isAdmin, setAdmin }}>
+    <Context.Provider value={{ language, setLanguage, isAdmin, setAdmin, menuOpen, setMenuOpen }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />

@@ -15,9 +15,9 @@ const contactLinkClass =
   'flex min-w-0 items-center gap-3 rounded-xl px-2 py-2 text-gray-800 underline-offset-4 transition-colors hover:bg-gray-200/60 hover:underline bg-red-200'
 
 export default function Landing() {
-  const { language } = useContext(Context);
+  const { language, menuOpen } = useContext(Context);
   return (
-    <div className="flex flex-col h-dvh">
+    <div className={`flex flex-col h-dvh ${menuOpen && "max-md:overflow-hidden"}`}>
     <NavBar txtColor="text-black" bgColor='bg-purple-100'/>
     <div className="flex flex-col items-center justify-center gap-10 p-4 bg-red-100 flex-1">
 

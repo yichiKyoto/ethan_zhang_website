@@ -7,7 +7,7 @@ export function GymCard(props: {image: string, desc_en: string, desc_zh : string
   return (
     <div className="grid w-full h-full bg-[#1a1a1a] rounded-xl shadow-xl gap-5 overflow-hidden"
       style={{ gridTemplateColumns: 'repeat(15, 1fr)', gridTemplateRows: 'repeat(10, 1fr)' }}>
-      <p className="text-white text-3xl rounded-xl bg-gray-500 flex items-center justify-center text-center"
+      <p className="text-white text-3xl rounded-xl flex items-center justify-center text-center p-4"
         style={{ gridColumn: '3 / 6', gridRow: '4 / 7' }}>
         { language === "English" ? props.desc_en : props.desc_zh}
       </p>

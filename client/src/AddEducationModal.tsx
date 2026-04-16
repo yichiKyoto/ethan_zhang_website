@@ -83,15 +83,16 @@ export default function AddEducationModal(props: {
               ref={fileInputRef}
               type="file"
               accept=".pdf,application/pdf"
-              className="hidden"
+              className="hidden overflow-hidden"
               onChange={(e) => {
                 setTranscriptFile(e.target.files?.[0] ?? null)
                 e.target.value = ''
               }}
+
             />
             <button
               type="button"
-              className="cursor-pointer rounded border border-gray-400 px-3 py-2 text-left text-sm text-gray-700 hover:bg-red-50"
+              className="cursor-pointer rounded border border-gray-400 px-3 py-2 text-left text-sm text-gray-700 hover:bg-red-50 overflow-hidden"
               onClick={() => fileInputRef.current?.click()}
             >
               {transcriptFile ? transcriptFile.name : (isChinese ? zh.choosePdf : 'Choose PDF…')}
@@ -99,9 +100,9 @@ export default function AddEducationModal(props: {
           </div>
         </div>
 
-        <div className="flex min-h-0 max-h-[300px] flex-col gap-3 overflow-y-auto pr-1">
+        <div className="flex min-h-0 max-h-[300px] flex-col gap-3 overflow-y-auto pr-1 max-md:items-center gap-10">
           {skills.map((skill, index) => (
-            <div key={index} className="grid min-w-0 grid-cols-[1fr_1fr_auto] items-end gap-x-2">
+            <div key={index} className="grid min-w-0 grid-cols-[1fr_1fr_auto] items-end gap-x-2 max-md:flex max-md:flex-col">
               <Input
                 type="text"
                 label={isChinese ? `技能 ${index + 1} (英文)` : `Skill ${index + 1} (English)`}

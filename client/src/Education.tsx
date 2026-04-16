@@ -38,7 +38,7 @@ const copy = {
 } as const
 
 export default function Education() {
-  const { isAdmin, language } = useContext(Context)
+  const { isAdmin, language, menuOpen } = useContext(Context)
   const t = language === '中文' ? copy.zh : copy.en
   const [education, setEducation] = useState<Education[]>([])
   const [loading, setLoading] = useState(true)
@@ -51,10 +51,10 @@ export default function Education() {
   }, [])
 
   return (
-    <div className="flex h-dvh flex-col">
+    <div className={`flex h-dvh flex-col ${menuOpen && "max-md:overflow-hidden"}`}>
       <NavBar txtColor={"text-black"} bgColor={"bg-purple-100"}/>
       <div className="flex flex-1 flex-col gap-3 bg-red-100 p-4">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 justify-center">
           <h1 className="text-3xl font-medium my-4 mx-2">
             {t.pageTitle}
           </h1>
@@ -68,7 +68,7 @@ export default function Education() {
           )}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 items-center">
           {loading ? <LoadingSpinner /> : education.map((item) => (
             <EducationCard
               key={item.id}

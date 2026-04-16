@@ -25,12 +25,12 @@ export default function AdminPage() {
   const [adminKey, setAdminKey] = useState<string>("");
   const [error, setError] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
-  const { setAdmin, isAdmin, language } = useContext(Context);
+  const { setAdmin, isAdmin, language, menuOpen } = useContext(Context);
   const t = language === '中文' ? copy.zh : copy.en
 
   console.log(language);
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
+    <div className={`flex flex-col items-center justify-center h-dvh ${menuOpen && "max-md:overflow-hidden"}`}>
       <NavBar txtColor="text-black" bgColor="bg-purple-100"/>
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-4 bg-red-100">
         <div className="-translate-y-1/2 flex flex-col gap-4">

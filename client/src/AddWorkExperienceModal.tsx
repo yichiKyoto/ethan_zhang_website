@@ -65,9 +65,9 @@ export default function AddWorkExperienceModal(props: {
           <Input label={isChinese ? '时间段 (中文)' : 'Period (Chinese)'} type="text" value={periodZh} onChange={(e) => setPeriodZh(e.target.value)} />
         </div>
 
-        <div className="flex min-h-0 max-h-[300px] flex-col gap-3 overflow-y-auto pr-1">
+        <div className="flex min-h-0 max-h-[300px] flex-col gap-3 overflow-y-auto pr-1 items-center gap-5">
           {skills.map((skill, index) => (
-            <div key={index} className="grid min-w-0 grid-cols-[1fr_1fr_auto] items-end gap-x-2">
+            <div key={index} className="grid min-w-0 grid-cols-[1fr_1fr_auto] items-end gap-x-2 max-md:flex max-md:flex-col">
               <Input
                 type="text"
                 label={isChinese ? `技能 ${index + 1} (英文)` : `Skill ${index + 1} (English)`}

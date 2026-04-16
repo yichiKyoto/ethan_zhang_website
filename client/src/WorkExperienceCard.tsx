@@ -66,7 +66,7 @@ export default function WorkExperienceCard(props: {
   }
 
   return (
-    <div className="flex w-[70%] flex-col gap-2 rounded-lg border-2 border-gray-300 bg-red-100 p-4 relative">
+    <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-gray-300 bg-red-100 p-4 relative">
       <div className="flex flex-col justify-start">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-2xl font-medium">{zh ? (company_zh || company) : company}</h2>

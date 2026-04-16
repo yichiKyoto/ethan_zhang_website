@@ -5,5 +5,7 @@ export const Context = createContext({
   setLanguage: (_language: string) => {},
   isAdmin: false,
   setAdmin: (_isAdmin: boolean) => {},
+  menuOpen: false,
+  setMenuOpen: (_open: boolean) => {},
 });
 

@@ -8,19 +8,19 @@ export default function Gym() {
 
   const [showModal, setShowModal] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
-  const {language, isAdmin} = useContext(Context)
+  const {language, isAdmin, menuOpen} = useContext(Context)
 
   return (
-    <div className="flex h-dvh flex-col bg-black">
+    <div className={`flex h-dvh flex-col bg-black ${menuOpen && "max-md:overflow-hidden"} overflow-y-auto`}>
       <NavBar txtColor="text-white" bgColor="bg-black opacity-70" />
 
-      <div className="flex flex-1 flex-col p-10 relative">
+      <div className="flex flex-1 flex-col p-10">
         {
           isAdmin
           ?
           (
             <button
-              className="text-xl px-4 py-2 text-white border-white border-2 rounded-xl bg-neutral-900 hover:bg-gray-500 cursor-pointer absolute"
+              className="text-xl px-4 py-2 text-white border-white border-2 rounded-xl bg-neutral-900 hover:bg-gray-500 cursor-pointer self-start"
               onClick={() => setShowModal(true)}
             >
               {language === "English" ? ("Update your progress") : ("更新你的进步")}
@@ -30,7 +30,7 @@ export default function Gym() {
           undefined
         }
 
-        <div className="flex flex-1 h-[70%] w-[70%] self-center overflow-hidden">
+        <div className="flex flex-1">
           <GymPresentation refreshKey={refreshKey} />
         </div>
       </div>

@@ -48,7 +48,7 @@ export default function EditWorkExperienceCard(props: {
     : (isChinese ? '中文版本' : 'View Chinese Version')
 
   return (
-    <div className="relative flex w-[70%] flex-col gap-2 rounded-lg border-2 border-gray-300 bg-red-100 p-4">
+    <div className="relative flex w-full flex-col gap-2 rounded-lg border-2 border-gray-300 bg-red-100 p-4">
       <div className="flex min-w-0 flex-col justify-start gap-1">
 
         <div className="flex min-w-0 w-full items-center gap-2">

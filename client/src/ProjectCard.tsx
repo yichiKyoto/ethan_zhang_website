@@ -58,7 +58,7 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
   }
 
   return (
-    <div className="relative inline-flex flex-col rounded-xl shadow-xl items-center border-black border-1 bg-purple-200 p-2 w-[700px]">
+    <div className="relative inline-flex flex-col rounded-xl shadow-xl items-center border-black border-1 bg-purple-200 p-2 w-full h-full">
 
       {/* Admin icons — top right */}
       {isAdmin && (
@@ -92,14 +92,14 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
         </div>
       )}
 
-      <div className="relative w-[600px] h-[500px] bg-white rounded-xl flex items-center justify-center">
+      <div className="relative bg-white rounded-xl flex items-center justify-center max-h-[500px] flex-col">
         {images.length === 0 && (
           <p className="text-center text-xl">no image!</p>
         )}
         {images.length > 0 && (
           <>
             {imgLoading && (
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="flex items-center justify-center">
                 <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-200 border-t-red-500" />
               </div>
             )}
@@ -107,11 +107,9 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
               src={images[index]}
               onLoad={() => setImgLoading(false)}
               onLoadStart={() => setImgLoading(true)}
-              className={`rounded-lg w-full h-full object-cover absolute inset-0 transition-opacity duration-200 ${fading || imgLoading ? 'opacity-0' : 'opacity-100'}`}
+              className={`h-full rounded-lg object-contain transition-opacity duration-200 ${fading || imgLoading ? 'opacity-0' : 'opacity-100'}`}
             />
-          </>
-        )}
-        {images.length > 1 && (
+            {images.length > 1 && (
           <>
             <button className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-black/30 p-1 text-white hover:bg-black/50" onClick={prev}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -125,20 +123,24 @@ export default function ProjectCard(props: {id : number, title: string, title_zh
             </button>
           </>
         )}
-      </div>
+          </>
+        )}
 
-      <div className="flex gap-2 items-center justify-center py-5">
-        <h1 className="text-xl">
+      </div>
+      {/*github and title stored here*/}
+      <div className="flex gap-2 items-center justify-center py-5 w-full max-md:flex-col overflow-hidden">
+        <h1 className="max-md:text-base text-xl shrink-0">
           {isChinese ? (current.title_zh || current.title) : current.title}
         </h1>
-        <div className="h-2 w-2 rounded-full bg-black" />
-        <a href={current.github} className="text-xl text-black/30 hover:text-black/50">
+        <div className="h-2 w-2 rounded-full bg-black shrink-0" />
+        <a href={current.github} className="max-md:text-base text-xl text-black/30 hover:text-black/50 min-w-0 truncate">
           {current.github}
         </a>
       </div>
-      <div className="flex flex-wrap gap-2 px-4 pb-4">
+
+      <div className="flex flex-wrap gap-2 px-4 pb-4 w-full justify-center">
         {current.attributes.map((attr, i) => (
-          <span key={i} className="rounded-full bg-purple-300 px-3 py-1 text-sm font-medium text-purple-900">
+          <span key={i} className="rounded-full bg-purple-300 px-3 py-1 text-sm font-medium text-purple-900 max-md:text-xs">
             {isChinese ? (attr.zh || attr.en) : attr.en}
           </span>
         ))}
