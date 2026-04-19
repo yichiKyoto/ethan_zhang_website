@@ -10,7 +10,7 @@ import AdminPage from './AdminPage'
 
 function App() {
   const [language, setLanguage] = useState('English');
-  const [isAdmin, setAdmin] = useState(true);
+  const [isAdmin, setAdmin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (

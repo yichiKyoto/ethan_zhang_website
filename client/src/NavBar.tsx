@@ -63,7 +63,18 @@ export default function NavBar(props: {bgColor: string, txtColor: string}) {
             {language === 'English' ? 'Gym' : '健身'}
           </Link>
           <Link to="/admin" onClick={close} className="text-xl flex items-center gap-3 hover:bg-gray-200/60 px-6 py-4 rounded-xl w-full justify-center">
-            {language === 'English' ? <>Edit mode <span>{isAdmin ? 'ON' : 'OFF'}</span></> : <>编辑模式 <span>{isAdmin ? '开' : '关'}</span></>}
+
+            {isAdmin ? (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+
+            ):
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+            </svg>
+          }
+            Admin
           </Link>
         </div>
       )}
@@ -107,8 +118,18 @@ export default function NavBar(props: {bgColor: string, txtColor: string}) {
           {language === 'English' ? 'Gym' : '健身'}
         </Link>
         <Link to="/admin" className="text-xl flex items-center gap-3 hover:bg-gray-200/60 p-5 rounded-xl cursor-pointer ml-auto">
-          {language === 'English' ? <>Edit mode <span>{isAdmin ? 'ON' : 'OFF'}</span></> : <>编辑模式 <span>{isAdmin ? '开' : '关'}</span></>}
-        </Link>
+          {isAdmin ? (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+
+            ):
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+            </svg>
+          }
+            Admin
+          </Link>
       </div>
     </>
   );

@@ -1,18 +1,20 @@
-import { useContext } from "react"
-import { Context } from "./Context"
+import { useState } from "react"
+import LoadingSpinner from "./LoadingSpinner";
 
-export function GymCard(props: {image: string, desc_en: string, desc_zh : string}) {
-  const { language } = useContext(Context);
+export function GymCard(props: { image: string, isLoading: boolean }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const showSpinner = props.isLoading || !imgLoaded;
 
   return (
-    <div className="grid w-full h-full bg-[#1a1a1a] rounded-xl shadow-xl gap-5 overflow-hidden"
-      style={{ gridTemplateColumns: 'repeat(15, 1fr)', gridTemplateRows: 'repeat(10, 1fr)' }}>
-      <p className="text-white text-3xl rounded-xl flex items-center justify-center text-center p-4"
-        style={{ gridColumn: '3 / 6', gridRow: '4 / 7' }}>
-        { language === "English" ? props.desc_en : props.desc_zh}
-      </p>
-      <div className="rounded-xl bg-cover bg-center bg-no-repeat"
-        style={{ gridColumn: '7 / 15', gridRow: '2 / 10', backgroundImage: `url(${props.image})` }} />
+    <div className="w-full h-full rounded-xl bg-[#1a1a1a] overflow-hidden">
+      {showSpinner && <LoadingSpinner />}
+      {!props.isLoading && (
+        <img
+          src={props.image}
+          className={`w-full h-full object-cover transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={() => setImgLoaded(true)}
+        />
+      )}
     </div>
   )
 }
