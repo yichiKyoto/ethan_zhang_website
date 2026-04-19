@@ -14,7 +14,7 @@ export default function Gym() {
     <div className={`flex h-dvh flex-col bg-black overflow-hidden ${menuOpen && "max-md:overflow-hidden"}`}>
       <NavBar txtColor="text-white" bgColor="bg-black opacity-70" />
 
-      <div className="flex flex-1 min-h-0 flex-col p-4 overflow-hidden">
+      <div className="flex flex-1 min-h-0 flex-col p-4 overflow-hidden gap-2">
         {isAdmin && (
           <button
             className="w-fit shrink-0 mb-2 mx-[1%] text-xl px-4 py-2 text-white border-white border-2 rounded-xl bg-neutral-900 hover:bg-gray-500 cursor-pointer"

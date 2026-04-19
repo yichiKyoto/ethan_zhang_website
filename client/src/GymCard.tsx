@@ -6,7 +6,7 @@ export function GymCard(props: { image: string, isLoading: boolean }) {
   const showSpinner = props.isLoading || !imgLoaded;
 
   return (
-    <div className="w-full h-full rounded-xl bg-[#1a1a1a] overflow-hidden">
+    <div className="w-full h-full rounded-xl bg-[#1a1a1a] overflow-hidden flex items-center justify-center">
       {showSpinner && <LoadingSpinner />}
       {!props.isLoading && (
         <img

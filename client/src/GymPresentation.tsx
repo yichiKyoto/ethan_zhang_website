@@ -96,7 +96,7 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
   }
 
   return (
-    <div className="flex-1 min-h-0 w-[98%] mx-auto flex flex-col rounded-2xl bg-[#1c1c1e] shadow-2xl overflow-hidden">
+    <div className="shrink-0 w-[98%] aspect-[2/1] max-md:aspect-[1/2] max-h-[85%] mx-auto flex flex-col rounded-2xl bg-[#1c1c1e] shadow-2xl overflow-hidden">
 
       {/* Row: description + image */}
       <div className="flex flex-row max-md:flex-col flex-1 min-h-0">
