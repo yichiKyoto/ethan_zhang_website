@@ -1,11 +1,8 @@
 import ethanPhoto from './assets/ethan_zhang.png'
 import {
-  IconDiscord,
   IconGitHub,
-  IconInstagram,
   IconLinkedIn,
-  IconMail,
-  IconPhone,
+  IconMail
 } from './ContactIcons'
 import NavBar from './NavBar'
 import { Context } from './Context';
