@@ -7,5 +7,6 @@ export const Context = createContext({
   setAdmin: (_isAdmin: boolean) => {},
   menuOpen: false,
   setMenuOpen: (_open: boolean) => {},
+  profilePhoto: '',
+  setProfilePhoto: (_url: string) => {},
 });
-

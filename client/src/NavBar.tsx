@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import ethanPhoto from './assets/ethan_zhang.png'
 import { Context } from './Context';
 import { useContext } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function NavBar(props: {bgColor: string, txtColor: string}) {
-  const { language, setLanguage, isAdmin, menuOpen, setMenuOpen } = useContext(Context);
+  const { language, setLanguage, isAdmin, menuOpen, setMenuOpen, profilePhoto } = useContext(Context);
 
   const close = () => setMenuOpen(false);
 
@@ -27,7 +27,10 @@ export default function NavBar(props: {bgColor: string, txtColor: string}) {
           )}
         </button>
         <Link to="/" onClick={close} className="flex items-center gap-2">
-          <img src={ethanPhoto} alt="Ethan Zhang" className="w-8 h-8 rounded-lg" />
+          {profilePhoto
+            ? <img src={profilePhoto} alt="Ethan Zhang" className="w-8 h-8 rounded-lg object-cover" />
+            : <div className="w-8 h-8 rounded-lg bg-gray-300 flex items-center justify-center"><LoadingSpinner /></div>
+          }
           <span className="text-lg">{language === 'English' ? 'Ethan Zhang' : '张亦弛'}</span>
         </Link>
         <button className="p-2 rounded-xl hover:bg-gray-200/60 cursor-pointer" onClick={() => setLanguage(language === 'English' ? '中文' : 'English')}>
@@ -102,7 +105,10 @@ export default function NavBar(props: {bgColor: string, txtColor: string}) {
         </Link>
         <div className="h-2 w-2 rounded-full bg-gray-400" />
         <Link to="/" className="text-center text-xl flex items-center gap-3 hover:bg-gray-200/60 p-5 rounded-xl">
-          <img src={ethanPhoto} alt="Ethan Zhang" className="w-10 h-10 rounded-lg" />
+          {profilePhoto
+            ? <img src={profilePhoto} alt="Ethan Zhang" className="w-10 h-10 rounded-lg object-cover" />
+            : <div className="w-10 h-10 rounded-lg bg-gray-300 flex items-center justify-center"><LoadingSpinner /></div>
+          }
           <p>{language === 'English' ? 'Ethan Zhang' : '张亦弛'}</p>
         </Link>
         <div className="h-2 w-2 rounded-full bg-gray-400" />

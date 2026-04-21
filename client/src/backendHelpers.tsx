@@ -334,6 +334,36 @@ export const addProject = async (title: string, title_zh: string, githubLink: st
   ])
 }
 
+// ── Profile Photo ──────────────────────────────────────────────────────────
+
+export const fetchProfilePhoto = async (): Promise<string | null> => {
+  const { data, error } = await supabase
+    .from('settings')
+    .select('value')
+    .eq('key', 'profile_photo')
+    .single()
+  if (error) return null
+  return data?.value ?? null
+}
+
+export const uploadProfilePhoto = async (file: File): Promise<string> => {
+  const filePath = `profile.${file.name.split('.').pop()}`
+  const { error: uploadError } = await supabase.storage
+    .from('profile-photos')
+    .upload(filePath, file, { upsert: true })
+  if (uploadError) throw new Error(uploadError.message)
+
+  const { data } = supabase.storage.from('profile-photos').getPublicUrl(filePath)
+  const url = `${data.publicUrl}?t=${Date.now()}`
+
+  const { error: upsertError } = await supabase
+    .from('settings')
+    .upsert({ key: 'profile_photo', value: url }, { onConflict: 'key' })
+  if (upsertError) throw new Error(upsertError.message)
+
+  return url
+}
+
 // ── Gym Cards ──────────────────────────────────────────────────────────────
 
 export type GymCard = {

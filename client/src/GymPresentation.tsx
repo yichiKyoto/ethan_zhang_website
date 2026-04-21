@@ -59,7 +59,7 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
   }, [dragging])
 
   useEffect(() => {
-    if (dragging || gymCards.length === 0) return
+    if (dragging || showEditModal || gymCards.length === 0) return
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -71,7 +71,7 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
     }, 50)
 
     return () => clearInterval(interval)
-  }, [dragging, gymCards.length])
+  }, [dragging, showEditModal, gymCards.length])
 
   const handleDelete = async () => {
     if (!currentCard) return
