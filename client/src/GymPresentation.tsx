@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { getAllGymCards, deleteGymCard, type GymCard } from "./backendHelpers"
 import { GymCard as GymCardComponent } from "./GymCard"
 import { Context } from "./Context"
@@ -12,6 +12,10 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
   const [dragging, setDragging] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
+  const descContainerRef = useRef<HTMLDivElement>(null)
+  const descTextRef = useRef<HTMLDivElement>(null)
+  const descPausedRef = useRef(false)
+  const descAnimRef = useRef<number | null>(null)
   const { isAdmin, language } = useContext(Context)
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -20,6 +24,44 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
       setIsLoading(false);
     })
   }, [refreshKey])
+
+  useEffect(() => {
+    const container = descContainerRef.current
+    const text = descTextRef.current
+    if (!container || !text) return
+    container.scrollTop = 0
+    const overflow = text.scrollHeight - container.clientHeight
+    if (overflow <= 0) return
+
+    let pos = 0
+    let direction = 1
+    let lastTime: number | null = null
+    let pauseUntil = 1500
+    const SPEED = 30
+    const PAUSE_MS = 1500
+
+    const animate = (time: number) => {
+      if (lastTime === null) lastTime = time
+      const delta = time - lastTime
+      lastTime = time
+      if (!descPausedRef.current && time >= pauseUntil) {
+        pos += direction * SPEED * (delta / 1000)
+        if (pos >= overflow) {
+          pos = overflow
+          direction = -1
+          pauseUntil = time + PAUSE_MS
+        } else if (pos <= 0) {
+          pos = 0
+          direction = 1
+          pauseUntil = time + PAUSE_MS
+        }
+        container.scrollTop = pos
+      }
+      descAnimRef.current = requestAnimationFrame(animate)
+    }
+    descAnimRef.current = requestAnimationFrame(animate)
+    return () => { if (descAnimRef.current !== null) cancelAnimationFrame(descAnimRef.current) }
+  }, [currentCard, language])
 
   useEffect(() => {
     let newIndex = Math.floor((progress / 100) * gymCards.length)
@@ -41,6 +83,11 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
     setProgress(getPercent(e.clientX))
   }
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setDragging(true)
+    setProgress(getPercent(e.touches[0].clientX))
+  }
+
   useEffect(() => {
     if (!dragging) return
 
@@ -49,12 +96,21 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
       setProgress(getPercent(e.clientX))
       setDragging(false)
     }
+    const onTouchMove = (e: TouchEvent) => setProgress(getPercent(e.touches[0].clientX))
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.changedTouches[0]) setProgress(getPercent(e.changedTouches[0].clientX))
+      setDragging(false)
+    }
 
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
+    window.addEventListener('touchmove', onTouchMove)
+    window.addEventListener('touchend', onTouchEnd)
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', onMouseUp)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
     }
   }, [dragging])
 
@@ -95,21 +151,41 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
     }
   }
 
+  const [descOverflows, setDescOverflows] = useState(false)
+  useLayoutEffect(() => {
+    const container = descContainerRef.current
+    const text = descTextRef.current
+    if (!container || !text) return
+    setDescOverflows(text.scrollHeight > container.clientHeight)
+  }, [currentCard, language])
+
   return (
-    <div className="shrink-0 w-[98%] aspect-[2/1] max-md:aspect-[1/2] max-h-[85%] mx-auto flex flex-col rounded-2xl bg-[#1c1c1e] shadow-2xl overflow-hidden">
+    <div className="relative shrink-0 w-[98%] aspect-[2/1] max-md:aspect-[1/2] max-h-[85%] mx-auto flex flex-col rounded-2xl bg-[#1c1c1e] shadow-2xl overflow-hidden">
 
       {/* Row: description + image */}
-      <div className="flex flex-row max-md:flex-col flex-1 min-h-0">
+      <div className="flex flex-row max-md:flex-col w-full h-full">
 
         {/* Description */}
-        <div className="flex-1 h-full flex items-center justify-center text-white text-2xl font-semibold text-center p-8">
-          {currentCard
-            ? (language === '中文' ? currentCard.description_zh : currentCard.description_en)
-            : null}
+        <div
+          ref={descContainerRef}
+          className={`flex-1 min-h-0 overflow-y-auto flex${descOverflows ? '' : ' justify-center items-center'}`}
+          onMouseEnter={() => { descPausedRef.current = true }}
+          onMouseLeave={() => { descPausedRef.current = false }}
+          onTouchStart={() => { descPausedRef.current = true }}
+          onTouchEnd={() => { setTimeout(() => { descPausedRef.current = false }, 2000) }}
+        >
+          <div
+            ref={descTextRef}
+            className="text-white text-2xl font-semibold text-center p-8"
+          >
+            {currentCard
+              ? (language === '中文' ? currentCard.description_zh : currentCard.description_en)
+              : null}
+          </div>
         </div>
 
         {/* Image */}
-        <div className="relative flex-1 h-full min-w-0">
+        <div className="relative w-1/2 h-full max-md:w-full max-md:h-1/2 shrink-0">
           {currentCard && (
             <>
               <GymCardComponent
@@ -149,8 +225,9 @@ export default function GymPresentation({ refreshKey }: { refreshKey: number }) 
       {/* Progress bar — bottom border */}
       <div
         ref={barRef}
-        className="h-1 w-full shrink-0 bg-white/20 cursor-pointer select-none"
+        className="absolute bottom-0 left-0 h-1 max-md:h-2 w-full bg-white/20 cursor-pointer select-none"
         onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
       >
         <div className="h-full bg-red-300" style={{ width: `${progress}%` }} />
       </div>
