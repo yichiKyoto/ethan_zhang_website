@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import AddGymCardModal from "./AddGymCardModal";
 import GymPresentation from "./GymPresentation";
 
-export default function Gym() {
+export default function MyStory() {
 
   const [showModal, setShowModal] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)

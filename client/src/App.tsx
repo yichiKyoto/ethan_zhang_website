@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Projects from './Projects'
 import WorkExperience from './WorkExperience'
 import Education from './Education'
-import Gym from './Gym'
+import MyStory from './MyStory'
 import { useEffect, useState } from 'react'
 import { Context } from './Context'
 import AdminPage from './AdminPage'
@@ -29,7 +29,7 @@ function App() {
           <Route path="/projects" element={<Projects/>} />
           <Route path="/workExperience" element={<WorkExperience />} />
           <Route path="/education" element={<Education />} />
-          <Route path="/gym" element={<Gym />} />
+          <Route path="/mystory" element={<MyStory />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
